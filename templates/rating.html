@@ -386,7 +386,7 @@
                                             <label for="username">Nhập cookie:</label>
                                             <input type="text" name="cookie" class="form-control" id="cookie" placeholder="Nhập cookie">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Lấy dữ liệu shop</button>
+                                        <button type="submit" class="btn btn-primary">Lấy dữ liệu người dùng</button>
                                     </form>
                                 </div>
                             </div>
@@ -395,11 +395,13 @@
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-6">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Thông tin shop</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Thông tin người dùng</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <form method="post" action="get_orders">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="hiddenDataInput" name="cookie" value="{{ cookie }}">
                                         <h5 class="card-title">{{user_info.nickname}}</h5>
                                         <p class="card-text">Shop ID: {{user_info.shopid}}</p>
                                         <p class="card-text">Username: {{user_info.username}}</p>

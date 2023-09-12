@@ -51,9 +51,20 @@ def register(request):
 
 def get_info(request):
     if request.method == 'POST':
+        cookie = request.POST['cookie'].replace('.shopee.vn=','').replace('shopee.vn=','')
         params = {
-            'cookie' : request.POST['cookie']
+            'cookie' : cookie
         }
-        user_info = requests.post("http://localhost:2210/get_account_info", params=params).json()['data']['user_profile']
+        user_info = requests.get("http://localhost:2210/get_account_info", params=params).json()
         logger.info(user_info)
-        return render(request, 'rating.html', {'user_info':user_info})
+        if user_info is not None:
+            return render(request, 'rating.html', {'user_info':user_info['data']['user_profile'], 'cookie':cookie})
+        return render(request, 'rating.html')
+    
+def get_orders(request):
+    if request.method == 'POST':
+        cookie = request.POST['cookie']
+        params = {
+            'cookie' : cookie
+        }
+        

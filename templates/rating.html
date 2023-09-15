@@ -19,6 +19,12 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <style>
+        /* Add some custom styling */
+        .form-card {
+            margin-bottom: 20px;
+        }
+    </style>
 
 </head>
 
@@ -375,26 +381,49 @@
 
                     <div class="row">
                         <!-- Area Chart -->
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-6">
+                        <div class="col-xl-12 col-lg-12">
+                            <div class="card shadow mb-12">
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <form method="post" action="get_info">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <label for="username">Nhập cookie:</label>
-                                            <input type="text" name="cookie" class="form-control" id="cookie" placeholder="Nhập cookie">
-                                            <label for="username">Nhập username:</label>
-                                            <input type="text" name="username" class="form-control" id="username" placeholder="Nhập tên đăng nhập">
-                                            <label for="username">Nhập password:</label>
-                                            <input type="text" name="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Lấy dữ liệu người dùng</button>
-                                    </form>
+                                    <div class="container mt-5">
+                                        <h2 class="mb-4">Cookie Input Form</h2>
+                                        <form id="cookie-form">
+                                            <div class="form-group">
+                                                <label for="cookie">Cookie:</label>
+                                                <input type="text" class="form-control" id="cookie" name="cookie">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="username">Username:</label>
+                                                <input type="text" class="form-control" id="username" name="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password:</label>
+                                                <input type="password" class="form-control" id="password" name="password">
+                                            </div>
+                                            <button type="button" class="btn btn-primary mb-3" id="add-button">Add</button>
+                                        </form>
+                                    </div>
+                                
+                                    <div class="container mt-3">
+                                        <h2>Collected Data</h2>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Cookie</th>
+                                                    <th>Username</th>
+                                                    <th>Password</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="data-table-body">
+                                                <!-- Data will be displayed here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {% if user_info is not None%}
+                        {% comment %} {% if user_info is not None%}
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-6">
                                 <div class="card-header py-3">
@@ -413,10 +442,10 @@
                                 </div>
                             </div>
                         </div>
-                        {% endif%}
+                        {% endif%} {% endcomment %}
                     </div>
 
-                    {% if unrated_order is not None%}
+                    {% comment %} {% if unrated_order is not None%}
                     <div class="row">
                         <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-12">
@@ -437,7 +466,7 @@
                             </div>
                         </div>
                     </div>
-                    {% endif%}
+                    {% endif%} {% endcomment %}
 
                 </div>
                 <!-- /.container-fluid -->
@@ -495,8 +524,42 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{% static "js/sb-admin-2.min.js" %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript to handle adding and removing data from the table
+        const addButton = document.getElementById("add-button");
+        const dataTableBody = document.getElementById("data-table-body");
 
+        addButton.addEventListener("click", () => {
+            const cookieInput = document.getElementById("cookie").value;
+            const usernameInput = document.getElementById("username").value;
+            const passwordInput = document.getElementById("password").value;
 
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${cookieInput}</td>
+                <td>${usernameInput}</td>
+                <td>${passwordInput}</td>
+                <td><button class="btn btn-danger btn-sm remove-button">Remove</button></td>
+            `;
+
+            dataTableBody.appendChild(row);
+
+            document.getElementById("cookie").value = "";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        });
+
+        // Event delegation for Remove buttons
+        dataTableBody.addEventListener("click", (event) => {
+            if (event.target.classList.contains("remove-button")) {
+                const row = event.target.closest("tr");
+                dataTableBody.removeChild(row);
+            }
+        });
+    </script>
 </body>
 
 </html>

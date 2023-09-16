@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'shopeex_web_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'NamNN',
+        'NAME': 'shopeex',
         'USER': 'root',
         'PASSWORD': '!@Ngocnam2210',
         'HOST': 'localhost',  # or the hostname of your MySQL server

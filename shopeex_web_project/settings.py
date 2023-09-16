@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shopeex'
+    'shopeex',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/"
+
+AUTH_USER_MODEL = 'users.CustomUser'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None

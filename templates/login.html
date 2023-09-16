@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
+{% load static %}
+
 <head>
 
     <meta charset="utf-8">
@@ -45,13 +46,14 @@
                                     <form method="post" class="user" id="loginForm">
                                         {% csrf_token %}
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                            id="username" name="username" aria-describedby="emailHelp"
+                                            <input type="text" class="form-control form-control-user" id="username"
+                                                name="username" aria-describedby="emailHelp"
                                                 placeholder="Tên đăng nhập">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" id="password" name="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Mật khẩu">
+                                            <input type="password" id="password" name="password"
+                                                class="form-control form-control-user" id="password"
+                                                placeholder="Mật khẩu">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -59,9 +61,7 @@
                                                 <label class="custom-control-label" for="customCheck">Nhớ tôi</label>
                                             </div>
                                         </div>
-                                        <a id="loginBtn" onclick="submitLogin()" class="btn btn-primary btn-user btn-block">
-                                            Đăng nhập
-                                        </a>
+                                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
                                         <hr>
                                         <a href="index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Đăng nhập với Google
@@ -72,10 +72,10 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="{% url "forgot" %}">Quên mật khẩu?</a>
+                                        <a class="small" href="#">Quên mật khẩu?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="{% url "register" %}">Tạo tài khoản</a>
+                                        <a class="small" href="{% url 'register' %}">Tạo tài khoản</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,22 +90,14 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
-    <script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{% static "vendor/jquery-easing/jquery.easing.min.js" %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{% static "js/sb-admin-2.min.js" %}"></script>
-
-    <script>
-        function submitLogin(){
-            var form = document.getElementById("loginForm")
-            form.submit()
-        }
-    </script>
-
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 </body>
 
 </html>

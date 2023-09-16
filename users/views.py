@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from .forms import RegistrationForm, LoginForm
 from django.contrib.auth import logout
+from loguru import logger
 
 def register(request):
     if request.method == 'POST':
@@ -23,7 +24,10 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            logger.info('valid')
             return render(request, 'index.html', {'user': user})  # Redirect to the home page after login
+        else:
+            return render(request, 'login.html', {'form': form, 'error':True})
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})

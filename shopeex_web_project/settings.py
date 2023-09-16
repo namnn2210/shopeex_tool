@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopeex',
-    'users'
+    'users',
+    'django_rq'
 ]
 
 MIDDLEWARE = [
@@ -87,6 +88,19 @@ DATABASES = {
     }
 }
 
+# RQ Settings
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',  # Redis server hostname
+        'PORT': 6379,         # Redis server port
+        'DB': 0,              # Redis database number
+        'DEFAULT_TIMEOUT': 3600,  # Default timeout for tasks in seconds (1 hour)
+    },
+}
+
+# Use RQ as the Django task queue backend
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -137,3 +151,6 @@ LOGIN_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = 'users.CustomUser'
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+# Session engine
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+LOGIN_URL = '/user/login'

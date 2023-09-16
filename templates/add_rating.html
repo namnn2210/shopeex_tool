@@ -444,15 +444,15 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn muốn đăng xuất?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <!-- <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div> -->
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Đăng xuất</a>
                 </div>
             </div>
         </div>
@@ -567,9 +567,6 @@
                     data: JSON.stringify(rowData) // Send the entire rowData array as JSON
                 },
                 success: function (response) {
-                    // Handle the success response, e.g., show a success message
-                    {% comment %} alert(response.message); {% endcomment %}
-        
                     // Clear the table and hide the Submit button
                     tableRows.innerHTML = "";
                     document.getElementById("submitDataButton").style.display = "none";
@@ -597,7 +594,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Bạn có chắc chắn muốn thêm những tài khoản này không?
+                    Bạn có chắc chắn muốn thêm những tài khoản này không? Không thể hủy khi đã xác nhận
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>

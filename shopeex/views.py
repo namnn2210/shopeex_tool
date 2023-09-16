@@ -1,18 +1,23 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegistrationForm
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+
+from .forms import RegistrationForm
 from loguru import logger
 
-import requests
 
 @login_required
 def index(request):
     return render(request, 'index.html')
 
 @login_required
-def rating_order(request):
-    return render(request, 'rating.html')
+def add_rating_order(request):
+    return render(request, 'add_rating.html')
+
+@login_required
+def list_rating_order(request):
+    return render(request, 'list_rating.html')
 
 def login_view(request):
     if request.method == 'POST':
@@ -49,30 +54,18 @@ def register(request):
         form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
 
-def get_info(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        cookie = request.POST['cookie']
-        params = {
-            'cookie' : cookie,
-            'username':username,
-            'password':password
-        }
-        user_info = requests.get("http://localhost:2210/get_account_info", params=params).json()
-        logger.info(user_info)
-        if user_info is not None:
-            return render(request, 'rating.html', {'user_info':user_info['data']['user_profile'], 'cookie':cookie})
-        return render(request, 'rating.html')
+def save_data(request):
+    if request.method == "POST":
+        # Get the data sent from the JavaScript request
+        data = request.POST
+
+        # Save the data to a file (customize the file path and format)
+        print(data)
+        print(type(data))
+
+        # You can also perform additional processing or validation here
+
+        return render(request, 'list_rating.html')
+
+
     
-def get_orders(request):
-    if request.method == 'POST':
-        cookie = request.POST['cookie']
-        params = {
-            'cookie' : cookie
-        }
-        unrated_order = requests.get("http://localhost:2210/unrated_order", params=params).json()
-        logger.info(unrated_order)
-        if unrated_order is not None:
-            return render(request, 'rating.html', {'unrated_order':unrated_order, 'cookie':cookie})
-        return render(request, 'rating.html')

@@ -21,8 +21,15 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
     <style>
         /* Add some custom styling */
-        .form-card {
+        .form-card, .table-card {
             margin-bottom: 20px;
+        }
+
+        /* Centered modal styles */
+        .modal-centered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 
@@ -64,21 +71,17 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item active">
-                {% comment %} <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw fa-chart-area"></i>
                     <span>Đánh giá đơn hàng</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item" href="{% url 'rating' %}">Thêm tài khoản đánh giá</a>
+                        <a class="collapse-item" href="{% url 'list_rating' %}">Danh sách đang xử lý</a>
                     </div>
-                </div> {% endcomment %}
-                <a class="nav-link" href="{% url 'rating' %}">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Đánh giá đơn hàng</span></a>
+                </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
@@ -86,21 +89,6 @@
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-solid fa-flag"></i>
                     <span>Tố cáo shop</span></a>
-                {% comment %} <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div> {% endcomment %}
             </li>
 
             <!-- Divider -->
@@ -372,101 +360,55 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Đánh giá đơn hàng</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Nhập thông tin tài khoản xử lí</h1>
                         {% comment %} <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> {% endcomment %}
                     </div>
 
                     <!-- Content Row -->
 
-                    <div class="row">
-                        <!-- Area Chart -->
-                        <div class="col-xl-12 col-lg-12">
-                            <div class="card shadow mb-12">
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="container mt-5">
-                                        <h2 class="mb-4">Cookie Input Form</h2>
-                                        <form id="cookie-form">
-                                            <div class="form-group">
-                                                <label for="cookie">Cookie:</label>
-                                                <input type="text" class="form-control" id="cookie" name="cookie">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="username">Username:</label>
-                                                <input type="text" class="form-control" id="username" name="username">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="password">Password:</label>
-                                                <input type="password" class="form-control" id="password" name="password">
-                                            </div>
-                                            <button type="button" class="btn btn-primary mb-3" id="add-button">Add</button>
-                                        </form>
-                                    </div>
-                                
-                                    <div class="container mt-3">
-                                        <h2>Collected Data</h2>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Cookie</th>
-                                                    <th>Username</th>
-                                                    <th>Password</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="data-table-body">
-                                                <!-- Data will be displayed here -->
-                                            </tbody>
-                                        </table>
+                    <div class="container-fluid mt-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Input Form -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="usernameInput">Tên đăng nhập</label>
+                                            <input type="text" class="form-control" id="usernameInput" placeholder="Tên đăng nhập">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="passwordInput">Mật khẩu</label>
+                                            <input type="password" class="form-control" id="passwordInput" placeholder="Mật khẩu">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cookieInput">Cookies</label>
+                                            <input type="text" class="form-control" id="cookieInput" placeholder="Cookies">
+                                        </div>
+                                        <button class="btn btn-primary" id="addButton">Thêm</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {% comment %} {% if user_info is not None%}
-                        <div class="col-xl-6 col-lg-6">
-                            <div class="card shadow mb-6">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Thông tin người dùng</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <form method="post" action="get_orders">
-                                        {% csrf_token %}
-                                        <input type="hidden" id="hiddenDataInput" name="cookie" value="{{ cookie }}">
-                                        <h5 class="card-title">{{user_info.nickname}}</h5>
-                                        <p class="card-text">Shop ID: {{user_info.shopid}}</p>
-                                        <p class="card-text">Username: {{user_info.username}}</p>
-                                        <button type="submit" class="btn btn-primary">Lấy dữ liệu đơn hàng</button>
-                                    </form>
-                                </div>
+                            <div class="col-md-6">
+                                <!-- Data Table -->
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Cookies</th>
+                                            <th>Tên đăng nhập</th>
+                                            <th>Mật khẩu</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-table-body">
+                                        <!-- Rows will be added dynamically -->
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-success" id="submitDataButton" style="display: none;">Xác nhận</button>
                             </div>
                         </div>
-                        {% endif%} {% endcomment %}
                     </div>
 
-                    {% comment %} {% if unrated_order is not None%}
-                    <div class="row">
-                        <div class="col-xl-12 col-lg-12">
-                            <div class="card shadow mb-12">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Thông tin đơn hàng</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <form method="post" action="get_info">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <label for="username">Nhập cookie:</label>
-                                            <input type="text" name="cookie" class="form-control" id="cookie" placeholder="Nhập cookie">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Lấy dữ liệu người dùng</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif%} {% endcomment %}
 
                 </div>
                 <!-- /.container-fluid -->
@@ -528,38 +470,141 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // JavaScript to handle adding and removing data from the table
-        const addButton = document.getElementById("add-button");
-        const dataTableBody = document.getElementById("data-table-body");
+        // Define the CSRF token variable obtained from the template
+        var csrfToken = "{{ csrf_token }}";
 
-        addButton.addEventListener("click", () => {
-            const cookieInput = document.getElementById("cookie").value;
-            const usernameInput = document.getElementById("username").value;
-            const passwordInput = document.getElementById("password").value;
+        // Function to truncate the cookie string to the first 5 characters and last 4 characters
+        function truncateCookie(cookie) {
+            if (cookie.length > 9) {
+                return cookie.substr(0, 5) + '...' + cookie.substr(-4);
+            }
+            return cookie; // If the cookie length is less than or equal to 9, no truncation needed
+        }
 
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${cookieInput}</td>
-                <td>${usernameInput}</td>
-                <td>${passwordInput}</td>
-                <td><button class="btn btn-danger btn-sm remove-button">Remove</button></td>
+        // Function to add a new row to the data table
+        function addRowToTable(cookie, username, password) {
+            const truncatedCookie = truncateCookie(cookie);
+            const tableBody = document.getElementById("data-table-body");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${truncatedCookie}</td>
+                <td>${username}</td>
+                <td class="password-cell">******</td>
+                <td>
+                    <button class="btn btn-danger btn-sm remove-button">Remove</button>
+                </td>
             `;
+            // Store the actual password value as a custom data attribute
+            newRow.dataset.passwordValue = password;
+            newRow.dataset.fullCookie = cookie;
+            tableBody.appendChild(newRow);
+        }
 
-            dataTableBody.appendChild(row);
+        // Function to reset input fields
+        function resetInputFields() {
+            document.getElementById("cookieInput").value = "";
+            document.getElementById("usernameInput").value = "";
+            document.getElementById("passwordInput").value = "";
+        }
 
-            document.getElementById("cookie").value = "";
-            document.getElementById("username").value = "";
-            document.getElementById("password").value = "";
-        });
+        // Event listener for the "Add" button
+        document.getElementById("addButton").addEventListener("click", () => {
+            const cookie = document.getElementById("cookieInput").value;
+            const username = document.getElementById("usernameInput").value;
+            const password = document.getElementById("passwordInput").value;
 
-        // Event delegation for Remove buttons
-        dataTableBody.addEventListener("click", (event) => {
-            if (event.target.classList.contains("remove-button")) {
-                const row = event.target.closest("tr");
-                dataTableBody.removeChild(row);
+            if (cookie && username && password) {
+                addRowToTable(cookie, username, password);
+                resetInputFields();
+                document.getElementById("submitDataButton").style.display = "block";
+            } else {
+                alert("Please fill in all fields.");
             }
         });
+
+        // Event delegation for the "Remove" button
+        document.getElementById("data-table-body").addEventListener("click", (event) => {
+
+            if (event.target.classList.contains("remove-button")) {
+                const row = event.target.closest("tr");
+                row.remove();
+            }
+        });
+
+        // Event listener for the "Submit Data" button
+        document.getElementById("submitDataButton").addEventListener("click", () => {
+            // Display the confirmation modal
+            $('#confirmationModal').modal('show');
+        });
+
+
+        function saveData() {
+            // Close the modal
+            $('#confirmationModal').modal('hide');
+
+            const tableRows = document.querySelectorAll("#data-table-body tr");
+            const rowData = [];
+
+            tableRows.forEach((row) => {
+                const cookie = row.dataset.fullCookie;
+                const username = row.cells[1].textContent;
+                const password = row.dataset.passwordValue; // Retrieve the actual password value
+
+                rowData.push({ cookie, username, password });
+            });
+
+            // Output the collected data to the console (you can modify this to save or process the data)
+            console.log(rowData);
+
+            $.ajax({
+                type: "POST",
+                url: "data/insert", // Replace with the actual URL of your Django view
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                data: {
+                    data: JSON.stringify(rowData) // Send the entire rowData array as JSON
+                },
+                success: function (response) {
+                    // Handle the success response, e.g., show a success message
+                    {% comment %} alert(response.message); {% endcomment %}
+        
+                    // Clear the table and hide the Submit button
+                    tableRows.innerHTML = "";
+                    document.getElementById("submitDataButton").style.display = "none";
+        
+                    // Clear the rowData array
+                    rowData.length = 0;
+                    window.location.href = "rating/list";
+                },
+                error: function (xhr, errmsg, err) {
+                    // Handle any errors that occur during the AJAX request
+                    alert("Error: " + xhr.status + ": " + xhr.responseText);
+                }
+            });
+        }
     </script>
+
+    <!-- Modal for Confirmation -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn muốn thêm những tài khoản này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="confirmSaveButton" onclick="saveData()">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

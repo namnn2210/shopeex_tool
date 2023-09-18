@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'shopeex',
     'users',
     'django_rq'
+    'keys'
+    # Them app moi vao settings
 ]
 
 MIDDLEWARE = [

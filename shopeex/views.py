@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django_rq import get_queue
 from django.core import serializers
+from django.core.paginator import Paginator
 
 from loguru import logger
 from .models import ProcessData
@@ -20,13 +21,14 @@ def add_rating_order(request):
 @login_required
 def list_rating_order(request):
     # Get the logged-in user
+    page_number = request.GET.get('page')
     logged_in_user = request.user
 
     # Call the function to retrieve data for the logged-in user
-    data = get_data_for_logged_in_user(logged_in_user)
+    page, total_pages = get_data_for_logged_in_user(logged_in_user, page_number)
 
     # Pass the data to your template
-    return render(request, 'list_rating.html', {'data': data})
+    return render(request, 'list_rating.html', {'page': page, 'total_pages':total_pages})
 
 def save_data(request):
     logged_in_user = request.user
@@ -55,9 +57,15 @@ def save_data(request):
             process_data.save()
         return redirect('list_rating')
     
-def get_data_for_logged_in_user(user):
-    data = ProcessData.objects.filter(user=user).values('cookie', 'username', 'password','status','note','created_at')
-    return data
+def get_data_for_logged_in_user(user, page_number):
+    items_per_page = 10
+    data = ProcessData.objects.filter(user=user).all()
+    paginator = Paginator(data, items_per_page)
+    page = paginator.get_page(page_number)
+    total_pages = paginator.num_pages
+    logger.info(page)
+    logger.info(total_pages)
+    return page, total_pages
 
 
     

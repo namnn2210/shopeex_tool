@@ -23,6 +23,7 @@
                             <th>Tên đăng nhập</th>
                             <th>Ngày khởi tạo</th>
                             <th>Trạng thái</th>
+                            <th>Ghi chú</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,7 @@
                                 <div class="badge badge-secondary">KHÔNG XÁC ĐỊNH</div>
                                 {% endif %}
                             </td>
+                            <td>{{ item.note }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

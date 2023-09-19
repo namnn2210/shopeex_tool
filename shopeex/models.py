@@ -9,4 +9,5 @@ class ProcessData(models.Model):
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
     status = models.IntegerField(default=-1)
+    note = models.TextField(default='')
     created_at = models.DateTimeField(default=timezone.now() + timezone.timedelta(hours=7))

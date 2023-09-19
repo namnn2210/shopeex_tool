@@ -31,7 +31,6 @@ def list_rating_order(request):
 
 def save_data(request):
     logged_in_user = request.user
-    api_key = logged_in_user['api_key']
     queue = get_queue('default')
     if request.method == "POST":
         # Get the data sent from the JavaScript request
@@ -46,7 +45,7 @@ def save_data(request):
                 username=row['username'],
                 password=row['password']
             )
-            queue.enqueue(process_row, row, api_key)
+            queue.enqueue(process_row, row, logged_in_user)
             process_data.save()
         return redirect('list_rating')
     

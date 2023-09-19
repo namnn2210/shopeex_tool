@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'shopeex',
     'users',
-    'django_rq'
+    'django_rq',
     'keys'
     # Them app moi vao settings
 ]

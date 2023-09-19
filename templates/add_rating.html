@@ -47,7 +47,8 @@
                             <input type="text" class="form-control" id="cookieInput" placeholder="Cookies">
                         </div>
                         <button class="btn btn-primary" id="addButton">Thêm</button>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#modalMutipleAcc">
                             Nhập tài khoản hàng loạt
                         </button>
                     </div>
@@ -96,7 +97,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="myModal">
+<div class="modal fade" id="modalMutipleAcc">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -237,70 +238,107 @@
         });
     }
 
-    // You can keep the paste event listener here
-    document.addEventListener('paste', function (e) {
-        var pastedData = e.clipboardData.getData('text');
-        var rows = pastedData.split('\n');
-        var table = document.getElementById('dataTable');
+    // Add a paste event listener to the input fields within the "dataTable" table
+    var dataTable = document.getElementById('dataTable');
+    var inputFields = dataTable.querySelectorAll('input');
 
-        // Remove the initial row
-        table.innerHTML = '';
+    var isPasting = false; // Track if we are currently pasting
 
-        for (var i = 0; i < rows.length; i++) {
-            var rowData = rows[i].split('\t'); // assuming tab-separated data
+    inputFields.forEach(function (input) {
+        input.addEventListener('paste', function (e) {
+            if (isPasting) return; // Prevent simultaneous pasting
 
-            if (rowData.length === 3) {
-                var newRow = document.createElement('tr');
+            isPasting = true;
 
-                for (var j = 0; j < 3; j++) {
-                    var newCell = document.createElement('td');
-                    var newInput = document.createElement('input');
-                    newInput.setAttribute('type', (j === 1) ? 'password' : 'text');
-                    newInput.setAttribute('class', 'form-control');
-                    newInput.placeholder = (j === 0) ? "Tên đăng nhập" : (j === 1) ? "Mật khẩu" : "Cookies";
-                    newInput.value = rowData[j] || ''; // Set value or an empty string
-                    newCell.appendChild(newInput);
-                    newRow.appendChild(newCell);
+            var pastedData = e.clipboardData.getData('text');
+            var rows = pastedData.split('\n');
+
+            // Handle the pasted data for the specific input field as needed
+            // In this example, we split the data and set it to the corresponding input fields
+            var rowCount = 0; // Track the number of rows added
+            for (var i = 0; i < rows.length && rowCount < 8; i++) {
+                var rowData = rows[i].split('\t'); // Assuming tab-separated data
+
+                if (rowData.length === 3) {
+                    if (rowCount === 0) {
+                        // Paste data into the existing first row
+                        for (var j = 0; j < 3; j++) {
+                            inputFields[j].value = rowData[j] || ''; // Set value or an empty string
+                        }
+                    } else {
+                        // Create a new row in the table (skip the first row)
+                        var newRow = dataTable.insertRow(dataTable.rows.length);
+
+                        for (var j = 0; j < 3; j++) {
+                            var newCell = newRow.insertCell(j);
+                            var newInput = document.createElement('input');
+                            newInput.setAttribute('type', (j === 1) ? 'password' : 'text');
+                            newInput.setAttribute('class', 'form-control');
+                            newInput.placeholder = (j === 0) ? "Tên đăng nhập" : (j === 1) ? "Mật khẩu" : "Cookies";
+                            newInput.value = rowData[j] || ''; // Set value or an empty string
+                            newCell.appendChild(newInput);
+                        }
+                    }
+                    rowCount++;
+                } else {
+                    alert('Hãy nhập đủ số lượng cột theo yêu cầu');
+                    break;
                 }
-
-                table.appendChild(newRow);
-            } else {
-                alert('Please copy and paste a valid nx3 table.');
-                break;
             }
+
+            isPasting = false; // Reset the flag
+            e.preventDefault();
+        });
+    });
+    // Function to gather input data as a list of dictionaries
+    function getInputData() {
+        var data = [];
+        var table = document.getElementById("dataTable");
+        var rows = table.getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) { // Start from index 1 to skip the reference row
+            var row = rows[i];
+            var cells = row.getElementsByTagName("td");
+
+            var rowData = {
+                "username": cells[0].querySelector("input").value,
+                "password": cells[1].querySelector("input").value,
+                "cookie": cells[2].querySelector("input").value
+            };
+
+            data.push(rowData);
         }
 
-        e.preventDefault();
-    });
+        return data;
+    }
 
-    // Add event listener for the Submit button within the modal
-    document.getElementById('submitBtn').addEventListener('click', function () {
-        // Collect the input data and format as dictionaries
-        var inputFields = document.querySelectorAll('#dataTable input');
-        inputDataList = [];
+    // Event listener for the Submit button within the modal
+    document.getElementById("submitBtn").addEventListener("click", function () {
+        // Get the input data as a list of dictionaries
+        var inputData = getInputData();
 
-        inputFields.forEach(function (input, index) {
-            var fieldIndex = index % 3;
-            var rowIndex = Math.floor(index / 3);
-
-            if (fieldIndex === 0) {
-                // New dictionary for each first field
-                inputDataList[rowIndex] = {};
-            }
-
-            var fieldName = (fieldIndex === 0) ? "username" : (fieldIndex === 1) ? "password" : "cookie";
-            var fieldValue = input.value;
-
-            inputDataList[rowIndex][fieldName] = fieldValue;
-        });
-        
-        inputDataList.forEach(function (data, index) {
+        // Log the input data as a list of dictionaries to the console
+        console.log("Input Data:", inputData);
+        inputData.forEach(function (data, index) {
             addRowToTable(data['cookie'], data['username'], data['password']);
             document.getElementById("submitDataButton").style.display = "block";
         });
-        // Clear the modal content manually
-        document.getElementById('dataTable').innerHTML = '';
-        
+
+        // Remove all rows except the reference row
+        var table = document.getElementById("dataTable");
+        var rows = table.getElementsByTagName("tr");
+
+        // Start from the last row and remove all rows except the reference row (first row)
+        for (var i = rows.length - 1; i > 0; i--) {
+            table.deleteRow(i);
+        }
+
+        // Clear the input fields in the reference row
+        var referenceRow = rows[0];
+        var cells = referenceRow.getElementsByTagName("td");
+        for (var j = 0; j < 3; j++) {
+            cells[j].querySelector("input").value = "";
+        }
     });
 </script>
 {% endblock %}

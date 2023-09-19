@@ -14,7 +14,12 @@ import requests
 import json
 
 def get_proccesing_data(user,cookie,username,password):
-    data = ProcessData.objects.filter(user=user).filter(cookie=cookie).filter(username=username).filter(password=password).filter(status=-1).values('cookie', 'username', 'password','status','note','created_at')
+    data = ProcessData.objects.get(
+        user=user,
+        cookie=cookie,
+        username=username,
+        password=password,
+        status=-1)
     return data
 
 def process_row(row, logged_user_dict):
@@ -31,11 +36,13 @@ def process_row(row, logged_user_dict):
     if response['status_code'] == 200:
         # update status
         proccesing_data = get_proccesing_data(user=logged_in_user, cookie=row['cookie'], username=row['username'], password=row['password'])
-        proccesing_data.update(status=1)
-        proccesing_data.update(note=response['description'])
-        proccesing_data.save()
+        if proccesing_data:
+            proccesing_data.status = 1
+            proccesing_data.note = response['description']
+            proccesing_data.save()
     else:
         proccesing_data = get_proccesing_data(user=logged_in_user, cookie=row['cookie'], username=row['username'], password=row['password'])
-        proccesing_data.update(status=0)
-        proccesing_data.update(note=response['description'])
-        proccesing_data.save()
+        if proccesing_data:
+            proccesing_data.status = 0
+            proccesing_data.note = response['description']
+            proccesing_data.save()

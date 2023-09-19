@@ -22,10 +22,11 @@ def add_rating_order(request):
 def list_rating_order(request):
     # Get the logged-in user
     page_number = request.GET.get('page')
+    per_page = request.GET.get('per_page', 10)
     logged_in_user = request.user
 
     # Call the function to retrieve data for the logged-in user
-    page, total_pages = get_data_for_logged_in_user(logged_in_user, page_number)
+    page, total_pages = get_data_for_logged_in_user(logged_in_user, page_number, per_page)
 
     # Pass the data to your template
     return render(request, 'list_rating.html', {'page': page, 'total_pages':total_pages})
@@ -57,10 +58,9 @@ def save_data(request):
             process_data.save()
         return redirect('list_rating')
     
-def get_data_for_logged_in_user(user, page_number):
-    items_per_page = 10
+def get_data_for_logged_in_user(user, page_number, per_page):
     data = ProcessData.objects.filter(user=user).all()
-    paginator = Paginator(data, items_per_page)
+    paginator = Paginator(data, per_page)
     page = paginator.get_page(page_number)
     total_pages = paginator.num_pages
     logger.info(page)

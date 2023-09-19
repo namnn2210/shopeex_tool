@@ -47,7 +47,16 @@
                         </tr>
                         {% endfor %}
                     </tbody>
-                    <nav aria-label="Page navigation">
+                    <nav class="d-flex justify-content-between align-items-center" aria-label="Page navigation">
+                        <div class="form-group">
+                            <label for="rowsPerPage">Số lượng hiển thị:</label>
+                            <select class="form-control" id="rowsPerPage" data-current-page="{{ page.number }}">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
                         <ul class="pagination">
                             {% if page.has_previous %}
                             <li class="page-item">
@@ -101,5 +110,29 @@
 
     // Call the formatCookieText function when the page loads
     window.addEventListener("load", formatCookieText);
+
+    // JavaScript code to handle the change event of the rows per page dropdown
+    const rowsPerPageSelect = document.getElementById("rowsPerPage");
+
+    rowsPerPageSelect.addEventListener("change", function () {
+        const selectedRowsPerPage = this.value;
+        const currentPageNumber = rowsPerPageSelect.getAttribute("data-current-page");
+        window.location.href = `?page=${currentPageNumber}&per_page=${selectedRowsPerPage}`;
+    });
+
+    current_url = window.location.href
+    // Define a regex pattern to match the per_page parameter
+    const regexPattern = /per_page=(\d+)/;
+
+    // Use the regex pattern to extract the value
+    const match = current_url.match(regexPattern);
+
+    // Check if a match is found and extract the value
+    if (match) {
+        const perPageValue = match[1]; // Extracted value, which is '20' in this case
+        rowsPerPageSelect.value = perPageValue
+    } else {
+        rowsPerPageSelect.value = 10
+    }
 </script>
 {% endblock %}

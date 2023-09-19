@@ -256,7 +256,7 @@
             // Handle the pasted data for the specific input field as needed
             // In this example, we split the data and set it to the corresponding input fields
             var rowCount = 0; // Track the number of rows added
-            for (var i = 0; i < rows.length && rowCount < 8; i++) {
+            for (var i = 0; i < rows.length && rowCount < (rows.length - 1); i++) {
                 var rowData = rows[i].split('\t'); // Assuming tab-separated data
 
                 if (rowData.length === 3) {

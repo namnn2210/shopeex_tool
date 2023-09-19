@@ -14,7 +14,7 @@ import requests
 import json
 
 def get_proccesing_data(user,cookie,username,password):
-    data = ProcessData.objects.filter(user=user).filter(cookie=cookie).filter(username=username).filter(password=password).values('cookie', 'username', 'password','status','note','created_at')
+    data = ProcessData.objects.filter(user=user).filter(cookie=cookie).filter(username=username).filter(password=password).filter(status=-1).values('cookie', 'username', 'password','status','note','created_at')
     return data
 
 def process_row(row, logged_user_dict):

@@ -47,6 +47,9 @@
                             <input type="text" class="form-control" id="cookieInput" placeholder="Cookies">
                         </div>
                         <button class="btn btn-primary" id="addButton">Thêm</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                            Nhập tài khoản hàng loạt
+                        </button>
                     </div>
                 </div>
             </div>
@@ -88,6 +91,31 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                 <button type="button" class="btn btn-primary" id="confirmSaveButton" onclick="saveData()">Đồng
                     ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Nhập tài khoản hàng loạt</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="dataTable">
+                    <!-- Initial row for reference -->
+                    <tr>
+                        <td><input type="text" class="form-control" placeholder="Tên đăng nhập"></td>
+                        <td><input type="password" class="form-control" placeholder="Mật khẩu"></td>
+                        <td><input type="text" class="form-control" placeholder="Cookies"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="submitBtn">Submit</button>
             </div>
         </div>
     </div>
@@ -208,5 +236,71 @@
             }
         });
     }
+
+    // You can keep the paste event listener here
+    document.addEventListener('paste', function (e) {
+        var pastedData = e.clipboardData.getData('text');
+        var rows = pastedData.split('\n');
+        var table = document.getElementById('dataTable');
+
+        // Remove the initial row
+        table.innerHTML = '';
+
+        for (var i = 0; i < rows.length; i++) {
+            var rowData = rows[i].split('\t'); // assuming tab-separated data
+
+            if (rowData.length === 3) {
+                var newRow = document.createElement('tr');
+
+                for (var j = 0; j < 3; j++) {
+                    var newCell = document.createElement('td');
+                    var newInput = document.createElement('input');
+                    newInput.setAttribute('type', (j === 1) ? 'password' : 'text');
+                    newInput.setAttribute('class', 'form-control');
+                    newInput.placeholder = (j === 0) ? "Tên đăng nhập" : (j === 1) ? "Mật khẩu" : "Cookies";
+                    newInput.value = rowData[j] || ''; // Set value or an empty string
+                    newCell.appendChild(newInput);
+                    newRow.appendChild(newCell);
+                }
+
+                table.appendChild(newRow);
+            } else {
+                alert('Please copy and paste a valid nx3 table.');
+                break;
+            }
+        }
+
+        e.preventDefault();
+    });
+
+    // Add event listener for the Submit button within the modal
+    document.getElementById('submitBtn').addEventListener('click', function () {
+        // Collect the input data and format as dictionaries
+        var inputFields = document.querySelectorAll('#dataTable input');
+        inputDataList = [];
+
+        inputFields.forEach(function (input, index) {
+            var fieldIndex = index % 3;
+            var rowIndex = Math.floor(index / 3);
+
+            if (fieldIndex === 0) {
+                // New dictionary for each first field
+                inputDataList[rowIndex] = {};
+            }
+
+            var fieldName = (fieldIndex === 0) ? "username" : (fieldIndex === 1) ? "password" : "cookie";
+            var fieldValue = input.value;
+
+            inputDataList[rowIndex][fieldName] = fieldValue;
+        });
+        
+        inputDataList.forEach(function (data, index) {
+            addRowToTable(data['cookie'], data['username'], data['password']);
+            document.getElementById("submitDataButton").style.display = "block";
+        });
+        // Clear the modal content manually
+        document.getElementById('dataTable').innerHTML = '';
+        
+    });
 </script>
 {% endblock %}

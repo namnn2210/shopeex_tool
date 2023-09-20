@@ -14,6 +14,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -46,14 +47,17 @@
                                     <form method="post" class="user" id="loginForm">
                                         {% csrf_token %}
                                         {% if error is not None %}
-                                            <div class="error-div" style="display:'none'"></div>
+                                        <div class="error-div" style="display:'none'"></div>
                                         {% endif %}
-                                        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="errorModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="errorModalLabel">Đăng nhập không thành công</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <h5 class="modal-title" id="errorModalLabel">Đăng nhập không
+                                                            thành công</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -61,7 +65,8 @@
                                                         <p>Thông tin đăng nhập chưa chính xác. Hãy thử lại </p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Đóng</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,7 +115,7 @@
 
     </div>
 
-    
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
@@ -129,7 +134,7 @@
 
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Check if the 'error-div' is visible
             if ($('.error-div').length > 0) {
                 // Show a modal alert

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-i+j*&9g8s^$y5=2p=5xwm#lo%9o7h-%xkgo6$zp!)wkrw4%c5r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','https://shopeex.io.vn/','shopeex.io.vn','https://shopeex.io.vn']
 
 
 # Application definition
@@ -156,3 +156,4 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # Session engine
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 LOGIN_URL = '/user/login'
+CSRF_TRUSTED_ORIGINS = ['https://shopeex.io.vn']

@@ -52,6 +52,22 @@
                             Nhập tài khoản hàng loạt
                         </button>
                     </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Đánh giá</h5>
+                        <textarea class="form-control" id="commentInput" rows="5"
+                            placeholder="Nhập đánh giá (mỗi dòng là một đánh giá)"></textarea>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Ảnh đánh giá</h5>
+                        <form action="/upload" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="fileUpload">Chọn nhiều file hoặc folder</label>
+                                <input type="file" class="form-control-file" id="fileUpload" name="files" multiple
+                                    webkitdirectory>
+                            </div>
+                            <!-- <button type="submit" class="btn btn-primary">Upload</button> -->
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
@@ -70,17 +86,6 @@
                     </tbody>
                 </table>
                 <button class="btn btn-success" id="submitDataButton" style="display: none;">Xác nhận</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Đánh giá</h5>
-                        <textarea class="form-control" id="commentInput" rows="5"
-                            placeholder="Nhập đánh giá (mỗi dòng là một đánh giá)"></textarea>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

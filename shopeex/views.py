@@ -47,9 +47,10 @@ def save_data(request):
         # Get the data sent from the JavaScript request
         data = request.POST
         comments = request.POST.get('comments', False)
-        formatted_comments = ','.join(comments)
+        list_comments =  eval(comments)
+        formatted_comments = ','.join(list_comments)
         # logger.info(is_comments)
-        # row_data = eval(data['data'])
+        row_data = eval(data['data'])
         for row in row_data:
             process_data = ProcessData(
                 user=logged_in_user,  # Assign the logged-in user to the ForeignKey

@@ -22,13 +22,14 @@ def get_proccesing_data(user,cookie,username,password):
         status=-1)
     return data
 
-def process_row(row, logged_user_dict):
+def process_row(row,formatted_comments, logged_user_dict):
     logger.info(logged_user_dict)
     logged_in_user = CustomUser(**logged_user_dict)
     params = {
         'cookie':row['cookie'],
         'username':row['username'],
         'password':row['password'],
+        'comments':formatted_comments
     }
     logger.info(params)
     response = requests.post(url='http://localhost:7878/rate_order', params=params).json()

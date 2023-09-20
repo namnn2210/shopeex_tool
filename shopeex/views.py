@@ -46,15 +46,19 @@ def save_data(request):
     if request.method == "POST":
         # Get the data sent from the JavaScript request
         data = request.POST
-        row_data = eval(data['data'])
+        comments = request.POST.get('comments', False)
+        formatted_comments = ','.join(comments)
+        # logger.info(is_comments)
+        # row_data = eval(data['data'])
         for row in row_data:
             process_data = ProcessData(
                 user=logged_in_user,  # Assign the logged-in user to the ForeignKey
                 cookie=row['cookie'],
                 username=row['username'],
-                password=row['password']
+                password=row['password'],
+                comment=formatted_comments
             )
-            queue.enqueue(process_row, row, logged_user_dict)
+            queue.enqueue(process_row, row,formatted_comments, logged_user_dict)
             process_data.save()
         return redirect('list_rating')
     

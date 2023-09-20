@@ -72,6 +72,17 @@
                 <button class="btn btn-success" id="submitDataButton" style="display: none;">Xác nhận</button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Đánh giá</h5>
+                        <textarea class="form-control" id="commentInput" rows="5"
+                            placeholder="Nhập đánh giá (mỗi dòng là một đánh giá)"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -129,6 +140,8 @@
 <script>
     // Define the CSRF token variable obtained from the template
     var csrfToken = "{{ csrf_token }}";
+
+    var listComments = []
 
     // Function to truncate the cookie string to the first 5 characters and last 4 characters
     function truncateCookie(cookie) {
@@ -212,6 +225,8 @@
 
         // Output the collected data to the console (you can modify this to save or process the data)
         console.log(rowData);
+        processText()
+        console.log('====================', listComments)
 
         $.ajax({
             type: "POST",
@@ -220,7 +235,8 @@
                 "X-CSRFToken": csrfToken
             },
             data: {
-                data: JSON.stringify(rowData) // Send the entire rowData array as JSON
+                data: JSON.stringify(rowData), // Send the entire rowData array as JSON
+                comments: JSON.stringify(listComments)
             },
             success: function (response) {
                 // Clear the table and hide the Submit button
@@ -340,5 +356,21 @@
             cells[j].querySelector("input").value = "";
         }
     });
+
+    // Function to process the entered text
+    function processText() {
+        const textInput = document.getElementById("commentInput");
+        const text = textInput.value;
+
+        // Split the text into lines
+        const lines = text.split('\n');
+
+        // Log each line to the console and add to a list
+        const resultList = [];
+        lines.forEach((line, index) => {
+            console.log(`Line ${index + 1}: ${line}`);
+            listComments.push(line);
+        });
+    }
 </script>
 {% endblock %}

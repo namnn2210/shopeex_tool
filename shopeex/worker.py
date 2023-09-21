@@ -29,7 +29,7 @@ def process_row(row,formatted_comments, logged_user_dict):
         'cookie':row['cookie'],
         'username':row['username'],
         'password':row['password'],
-        'comments':formatted_comments
+        'comment':formatted_comments
     }
     logger.info(params)
     response = requests.post(url='http://localhost:7878/rate_order', params=params).json()

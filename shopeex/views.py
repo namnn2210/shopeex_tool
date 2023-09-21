@@ -47,8 +47,11 @@ def save_data(request):
         # Get the data sent from the JavaScript request
         data = request.POST
         comments = request.POST.get('comments', False)
+        logger.info('========================= %s' % comments)
+        logger.info('========================= %s' % len(comments))
         list_comments =  eval(comments)
         formatted_comments = ','.join(list_comments)
+        logger.info('========================= %s' % len(formatted_comments))
         # logger.info(is_comments)
         row_data = eval(data['data'])
         for row in row_data:

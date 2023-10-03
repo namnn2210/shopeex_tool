@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-i+j*&9g8s^$y5=2p=5xwm#lo%9o7h-%xkgo6$zp!)wkrw4%c5r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','https://shopeex.io.vn/','shopeex.io.vn','https://shopeex.io.vn']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

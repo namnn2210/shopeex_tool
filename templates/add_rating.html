@@ -56,7 +56,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Đánh giá</h5>
                         <textarea class="form-control" id="commentInput" rows="5"
-                            placeholder="Nhập đánh giá (mỗi dòng là một đánh giá)"></textarea>
+                            placeholder="Nhập đánh giá (đánh giá 1 | đánh giá 2 | đánh giá 3)"></textarea>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Ảnh đánh giá</h5>
@@ -367,7 +367,7 @@
         const text = textInput.value;
 
         // Split the text into lines
-        const lines = text.split('\n');
+        const lines = text.split('|');
 
         // Log each line to the console and add to a list
         const resultList = [];

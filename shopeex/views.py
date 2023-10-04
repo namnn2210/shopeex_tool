@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django_rq import get_queue
 from django.core import serializers
 from django.core.paginator import Paginator
+from datetime import datetime
 
 from loguru import logger
 from .models import ProcessData
@@ -41,14 +42,11 @@ def save_data(request):
         field_name = field.name
         field_value = getattr(logged_in_user, field_name)
         logged_user_dict[field_name] = field_value
-    logger.info(logged_user_dict)
     queue = get_queue('default')
     if request.method == "POST":
         # Get the data sent from the JavaScript request
         data = request.POST
         comments = request.POST.get('comments', False)
-        logger.info('========================= %s' % comments)
-        logger.info('========================= %s' % len(comments))
         list_comments =  eval(comments)
         formatted_comments = ','.join(list_comments)
         logger.info('========================= %s' % len(formatted_comments))
@@ -60,7 +58,8 @@ def save_data(request):
                 cookie=row['cookie'],
                 username=row['username'],
                 password=row['password'],
-                comment=formatted_comments
+                comment=formatted_comments,
+                created_at=datetime.now()
             )
             queue.enqueue(process_row, row,formatted_comments, logged_user_dict)
             process_data.save()

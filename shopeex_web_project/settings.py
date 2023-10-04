@@ -156,4 +156,4 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 # Session engine
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 LOGIN_URL = '/user/login'
-CSRF_TRUSTED_ORIGINS = ['https://shopeex.io.vn']
+# CSRF_TRUSTED_ORIGINS = ['https://shopeex.io.vn']
